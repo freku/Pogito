@@ -1,0 +1,161 @@
+lewy panel:
+    - lista klipow
+
+klip box:
+    - tytul,
+    - miniaturka,
+    - autor,
+    - lajki/reakcje
+    - komentarze
+    - tagi, tytul streamera
+
+prawy panel:
+
+komentarz:
+    - nick,
+    - avatar,
+    - wiadomosc,
+    - lapki,
+    czas dodanie !!!!!!!!!!!!!!!
+
+logowanie:
+    - login, password, submit btn
+    - rejestracja
+    - logowanie przez twitcha
+
+WCZESNIEKJ WSZYSTKI BYLO 125%
+WIEC TRZEBA WSZYSTKO POWIEKSZYC...
+
+KLIKANIE POD AVATAREM PRZEKIEROWYWUJE DO INDEXU
+
+Ikonki kolo nickow: konto z twitcha, konto z strony
+freku0 x y
+x - twitch acc
+y - normalne acc
+Łączenie kont...
+
+// USER OBJECT
+"id" => 1
+"name" => "freku0"
+"email" => "xfreku@gmail.com"
+"email_verified_at" => null
+"password" => "$2y$10$6hr8u/EDhwT5vAseuEwY6eck5PbSQdmEdw0ax3QUzLjDc2r/6BWri"
+"remember_token" => "jiJVCf5CdEPXnDQZiUerpjsW75QpToNF3LydwYSDVTuqdoibYrsAUVao5Vlr"
+"avatar" => "images/avatars/basic.jpg"
+"twitch_id" => null
+"created_at" => "2019-11-08 19:04:08"
+"updated_at" => "2019-11-08 19:04:08"
+
+// TWITCH USER OBJECT
+User {#311 ▼
+  +accessTokenResponseBody: array:5 [▶]
+  +token: "pb42fl7tmqd8s011qsvrdp1m8dw68m"
+  +refreshToken: "0bqs9oxob8rj46t8bd8qfu4cd3adnwypivvd0d1gu35xxp0c94"
+  +expiresIn: 14156
+  +id: "133031515"
+  +nickname: "freku0"
+  +name: "freku0"
+  +email: "xfreku@gmail.com"
+  +avatar: "https://static-cdn.jtvnw.net/jtv_user_pictures/freku0-profile_image-7d7fa49a9d938b87-300x300.jpeg"
+  +user: array:10 [▼
+    "id" => "133031515"
+    "login" => "freku0"
+    "display_name" => "freku0"
+    "type" => ""
+    "broadcaster_type" => ""
+    "description" => ""
+    "profile_image_url" => "https://static-cdn.jtvnw.net/jtv_user_pictures/freku0-profile_image-7d7fa49a9d938b87-300x300.jpeg"
+    "offline_image_url" => ""
+    "view_count" => 18
+    "email" => "xfreku@gmail.com"
+  ]
+}
+skaleto
+users table - freku0:xfreku@gmail.com
+twitch auth - freku0:xfreku@gmail.com
+
+
+Feeds: popular, new, most liked ( w danym czasie )
+
+post:
+    lajki - 1
+    komentarze - 1
+    #wyswietlenia - 1
+
+Score = 
+
+1,2,3,4,5,6
+
+21/6
+3.x
+
+x x x x x x x x x xx x x x x
+sort by (likes + koms)
+licze srednia arytmetyczna wyników sum lajkow i komentarzy i licze dalsze wyniki dla nich
+POST SCENARIO:
+    - post creation: 10/11/2019 16:30
+    - now: 10/11/2019 17:12
+    - lajki: 10/11/2019 16:32
+             10/11/2019 16:34
+             10/11/2019 16:39
+             10/11/2019 16:39
+             10/11/2019 16:41
+    - komentarze: 10/11/2019 16:32
+                  10/11/2019 16:33
+                  10/11/2019 16:39
+                  10/11/2019 16:45
+
+nazwa:lajki:komentarze
+01post:25:632
+02post:512:72
+03post:125:18
+04post:1230:192
+05post:301:20
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in, ultrices a ipsum. Aenean gravida egestas orci, sit amet
+ sollicitudin nulla porttitor finibus. Donec a mi finibus, iaculis turpis at, elementum quam. Vestibulum laoreet arcu at interdum fermentum. 
+ Suspendisse rhoncus enim id metus iaculis luctus. Aliquam imperdiet sodales mauris, ac porttitor velit vestibulum ac. Nam at felis ac nisi scelerisque dictum.
+  Vivamus dapibus blandit elementum. Quisque pulvinar, tortor et rutrum hendrerit, nulla elit dignissim massa, laoreet tristique urna lacus et nisi. Duis placerat
+   aliquam risus, et mollis mauris ullamcorper quis. Donec sit amet urna quis nunc congue cursus.
+ Sed venenatis elementum urna, facilisis blandit sapien aliquet sit amet.
+
+curl -H 'Accept: application/vnd.twitchtv.v5+json' \
+-H 'Client-ID: 8mn58soemts6mq5adodbb1cx23o5re' \
+-X GET 'https://api.twitch.tv/kraken/clips/SwissCarefulAnteaterPRChase'
+
+
+
+*/ better.one \*
+
+- tworzysz post z czymsc (zdjecie text itp) - czeka 2 slot na wypelnienie
+- co jakis czas jedno pole wygrywa a drugie odpada i czeka na nowe przeciwnika
+- fight story
+- kategorie
+- profile graczy
+- rankingi
+
+
+- kto tworzy posty?
+
+- kto dodaje pola po wygranej jakiegos pola?
+
+- czemu?
