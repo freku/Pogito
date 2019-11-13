@@ -12,8 +12,7 @@ class Comment extends Model
     protected $guarded = [];
     
     protected $attributes = [
-        'likes' => 0,
-        'comments' => 0
+        'likes' => 0
     ];
 
     public function likes()

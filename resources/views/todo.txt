@@ -26,6 +26,10 @@ logowanie:
 WCZESNIEKJ WSZYSTKI BYLO 125%
 WIEC TRZEBA WSZYSTKO POWIEKSZYC...
 
+{{-- <i class="material-icons md-36 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">keyboard_arrow_up</i> --}}
+<i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
+{{-- <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">add</i> --}}
+
 KLIKANIE POD AVATAREM PRZEKIEROWYWUJE DO INDEXU
 
 Ikonki kolo nickow: konto z twitcha, konto z strony

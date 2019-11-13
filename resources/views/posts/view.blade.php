@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Home page')
+@section('title', 'View page')
 
 @section('content')
+<script src={{ asset('js/ajax.js') }}></script>
 <div class="container mx-auto justify-center flex mt-2">
     <div class='bg-white rounded shadow-lg p-2 lg:w-1/2 md:w-4/6 w-full'>
         <div class="h_iframe">
@@ -60,65 +61,67 @@
         <div class="mt-3">
             <div class='mb-3'>
                 {{-- <p>Komentarze: </p> --}}
-                <div class='flex'>
+                <div class='flex' id='com-box'>
                     <div class='flex items-center mr-2'>
-                        <img src="{{URL('/images/avk.jpeg')}}" class="w-10 shadom-md rounded-full" alt="avatar">
+                        <img src="{{URL(Auth::user()->avatar)}}" class="w-10 shadom-md rounded-full" alt="avatar">
                     </div>
-                    <textarea name="" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
-                    <button class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                    <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
+                    <button id='add-comment-btn' class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                    <input type="hidden" name="post_id" value='{{ $post_id }}'>
                 </div>
-            </div>
-            @foreach ([1,1,1,1,1,1] as $item)
                 
-            <div class="mb-4 border rounded-lg p-1 bg-blue-100">
-                <div class='flex'>
-                    <div class='px-2 flex flex-col items-center'>
-                        <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
-                        <span class='text-green-700'>+2247</span>
-                        <a href="">
-                            {{-- <i class="material-icons md-36 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">keyboard_arrow_up</i> --}}
-                            <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
-                            {{-- <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">add</i> --}}
-                        </a>
+            </div>
+            <div id='comments'>
+                <div class="mb-4 border rounded-lg p-1 bg-blue-100">
+                    <div class='flex'>
+                        <div class='px-2 flex flex-col items-center'>
+                            <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
+                            <span class='text-green-700'>+2247</span>
+                            <a href="">
+                                <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="" class="flex items-center text-xs text-gray-600">
+                                <span class="font-bold">freku0</span>
+                                <i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>
+                            </a>
+                            <p class='text-sm'>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
+                                ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
+                            </p>
+                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
+                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
+                        </div>
                     </div>
-                    <div>
-                        <a href="" class="flex items-center text-xs text-gray-600">
-                            <span class="font-bold">freku0</span>
-                            <i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>
-                        </a>
-                        <p class='text-sm'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
-                            ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
-                        </p>
-                        <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
-                        <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
-                    </div>
-                </div>
-                <div class='flex ml-12'>
-                    <div class='px-2 flex flex-col items-center'>
-                        <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
-                        <span class='text-green-700'>+2247</span>
-                        <a href="">
-                            {{-- <i class="material-icons md-36 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">keyboard_arrow_up</i> --}}
-                            <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
-                            {{-- <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">add</i> --}}
-                        </a>
-                    </div>
-                    <div>
-                        <a href="" class="flex items-center text-xs text-gray-600">
-                            <span class="font-bold">freku0</span>
-                            <i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>
-                        </a>
-                        <p class='text-sm'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
-                            ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
-                        </p>
-                        <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
-                        <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
+
+                    <div class='flex ml-12' >
+                        <div class='px-2 flex flex-col items-center'>
+                            <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
+                            <span class='text-green-700'>+2247</span>
+                            <a href="">
+                                <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="" class="flex items-center text-xs text-gray-600">
+                                <span class="font-bold">freku0</span>
+                                <i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>
+                            </a>
+                            <p class='text-sm'>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
+                                ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
+                            </p>
+                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
+                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
+                            {{-- <div class='flex' id='com-box'>
+                                <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
+                                <button id='add-comment-btn' class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                            </div> --}}
+                        </div>
                     </div>
                 </div>
             </div>
-            @endforeach
         </div>
     </div>
 </div>

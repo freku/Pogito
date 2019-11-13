@@ -32,12 +32,6 @@ class PostController extends Controller
         return view('posts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // make tags an array
@@ -45,7 +39,7 @@ class PostController extends Controller
         $request->merge(['tags' => $tag_array]);
         
         // set id of the clip
-        $id = TH::getLinkID($request->input('link')); 
+        $id = TH::getLinkID($request->input('link'));
         $json = TH::getJsonFromTwitch($id);
 
         // validate
@@ -95,7 +89,6 @@ class PostController extends Controller
         ]);
     }
 
-    // POWTARZAJACE SIE TAGI naprawic..
     public function processTags($tags, $post_id)
     {
         if (count($tags) == 1 && $tags[0] == '') {
@@ -141,7 +134,8 @@ class PostController extends Controller
                 'clip_url' => $post->clip_url,
                 'likes' => $post->likes,
                 'tags' => $post->tagLists,
-                'time' => $this->getPostDate($post->created_at)
+                'time' => $this->getPostDate($post->created_at),
+                'post_id' => $post->id
             ]);
         } else { // post nie istnieje
             // view 404 page

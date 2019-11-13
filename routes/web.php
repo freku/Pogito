@@ -28,3 +28,6 @@ Route::resource('post', 'PostController');
 
 Route::get('/login/twitch', 'Auth\TwitchController@redirectToProvider')->name('twitch-login');
 Route::get('/login/twitch/cb', 'Auth\TwitchController@handleProviderCallback');
+
+Route::post('/ajax/like', 'AjaxController@like')->name('ajax.like');
+Route::post('/ajax/comment', 'AjaxController@comment')->name('ajax.comment');
