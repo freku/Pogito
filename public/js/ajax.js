@@ -1,5 +1,8 @@
 $(document).ready(function() {
-    $("#add-comment-btn").click(function() {
+    $("#com-box-all").on('click', '.add-comment-btn', function() {
+        var com_id = $(this).attr('com_id') || null;
+        var is_sub = $(this).attr('is_sub') || null;
+        
         if ($(this).hasClass('inactive')) {
             return;
         }
@@ -18,13 +21,15 @@ $(document).ready(function() {
             type: 'POST',
             data: {
                 message: $("#comment-input").val(),
-                post_id: $('input[name="post_id"]').attr('value')
+                post_id: $('input[name="post_id"]').attr('value'),
+                com_id: com_id
             },
             dataType: 'JSON',
             success: function (data) {
                 var html = getComment(data.avatar, data.name, data.is_author, data.message, data.com_id, false)
 
                 $('#comments').prepend(html);
+                // $('') // clear input box
             },
             // inactive
             error: function (data) {
@@ -44,18 +49,20 @@ $(document).ready(function() {
         });
     });
 
-    $(".reply").on('click', function() {
+    $("#comments").on('click', '.reply', function(e) {
         var com_id = $(this).parent().parent().attr('com-id');
         var is_sub = $(this).parent().parent().attr('is-sub');
-        console.log('yes');
-        var html = `
-            <div class='flex' com-box-id='${com_id}' is-sub='${is_sub}'>
-                <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
-                <button id='add-comment-btn' class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
-            </div>
-        `;
 
-        $("div[com-id='"+ com_id +"']").children('.left-com-box').append(html);
+        if( $("textarea[com-box-id='"+com_id+"'").length === 0 ) {
+            var html = `
+                <div class='flex'>
+                    <textarea is-sub='${is_sub}' com-box-id='${com_id}' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
+                    <button is-sub='${is_sub}' com-box-id='${com_id}' class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                </div>
+            `;
+    
+            $("div[com-id='"+ com_id +"']").children('.left-com-box').append(html);
+        }
     });
 
     $.ajaxSetup({
@@ -68,11 +75,11 @@ $(document).ready(function() {
         url: '/ajax/comment',
         type: 'GET',
         data: {
-            message: $("#comment-input").val()
+            post_id: $('input[name="post_id"]').attr('value')
         },
         dataType: 'JSON',
         success: function (data) {
-            
+            console.log(data);
         },
         error: function (data) {
             var errors = $.parseJSON(data.responseText);
@@ -105,7 +112,7 @@ $(document).ready(function() {
                     <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
                 </a>
             </div>
-            <div class='left-com-box'>
+            <div class='left-com-box w-full'>
                 <a href="" class="flex items-center text-xs text-gray-600">
                     <span class="font-bold">${name}</span>`;
         if (is_author) {
@@ -116,7 +123,7 @@ $(document).ready(function() {
                     <p class='text-sm'>
                         ${message}
                     </p>
-                    <i class="reply material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
+                    <i type='sub-com' class="reply material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
                     <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
                 </div>
         `;

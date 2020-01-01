@@ -9,12 +9,13 @@
         @foreach ([1,2,3,4,5,5,5,5] as $item)
         <!-- clip box -->
         {{-- <div class='lg:w-1/2 sm:w-3/4 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'> --}}
-        <div class='lg:w-1/2 sm:w-3/4 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'>
+        {{-- <div class='lg:w-1/2 sm:w-3/4 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'> --}}
+        <div class='lg:w-4/6 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'>
             <div class="flex justify-center relative">
                 {{-- <img src="{{URL('/images/bg.png')}}" class="w-auto rounded" alt="bg"> --}}
-                <a href="">
-                    <img src="{{URL('/images/img.jpg')}}" class="w-auto rounded" alt="bg">
-                </a>
+                {{-- <a href=""> --}}
+                    <img src="{{URL('/images/img.jpg')}}" class="w-full rounded" style='object-fit: contain;' alt="bg">
+                {{-- </a> --}}
                 <div class="text-xs px-1 rounded absolute text-white font-bold" style="top:5px;right:5px;background:rgba(0,0,0,.3);">
                     <span class='uppercase'>h2p_gucio</span>
                 </div>
@@ -58,6 +59,7 @@
     </div>
     
     <!-- SIDE BAR -->
+    {{-- <div class="lg:w-1/4 w-2/5 sm:block hidden"> --}}
     <div class="lg:w-1/4 w-2/5 sm:block hidden">
         <div class='bg-white rounded shadow-lg p-2 m-2 my-1'>
             <a href="" class="flex items-center text-xs justify-center text-lg text-red-500 bg-yellow-300 mb-2">

@@ -31,3 +31,4 @@ Route::get('/login/twitch/cb', 'Auth\TwitchController@handleProviderCallback');
 
 Route::post('/ajax/like', 'AjaxController@like')->name('ajax.like');
 Route::post('/ajax/comment', 'AjaxController@comment')->name('ajax.comment');
+Route::get('/ajax/comment', 'AjaxController@getComments')->name('ajax.comment.get');

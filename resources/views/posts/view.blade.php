@@ -58,7 +58,7 @@
             </div>
         </div>
         
-        <div class="mt-3">
+        <div class="mt-3" id='com-box-all'>
             <div class='mb-3'>
                 {{-- <p>Komentarze: </p> --}}
                 <div class='flex' id='com-box'>
@@ -66,10 +66,9 @@
                         <img src="{{URL(Auth::user()->avatar)}}" class="w-10 shadom-md rounded-full" alt="avatar">
                     </div>
                     <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
-                    <button id='add-comment-btn' class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                    <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
                     <input type="hidden" name="post_id" value='{{ $post_id }}'>
                 </div>
-                
             </div>
             <div id='comments'>
                 <div class="mb-4 border rounded-lg p-1 bg-blue-100">
@@ -81,21 +80,20 @@
                                 <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
                             </a>
                         </div>
-                        <div>
+                        <div class='w-full'>
                             <a href="" class="flex items-center text-xs text-gray-600">
                                 <span class="font-bold">freku0</span>
                                 <i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>
                             </a>
                             <p class='text-sm'>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
-                                ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
+                                Lorem ipsum dolor sit amet, 
                             </p>
-                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
+                            <i class="reply material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
                             <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
                         </div>
                     </div>
 
-                    <div class='flex ml-12' >
+                    <div class='flex ml-12'>
                         <div class='px-2 flex flex-col items-center'>
                             <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
                             <span class='text-green-700'>+2247</span>
@@ -112,7 +110,7 @@
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit dolor, fermentum vitae posuere in,
                                 ultrices a ipsum. Aenean gravida egestas orci, sit ametsollicitudin nulla porttitor finibus.
                             </p>
-                            <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
+                            <i class="reply material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">reply</i>
                             <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
                             {{-- <div class='flex' id='com-box'>
                                 <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>

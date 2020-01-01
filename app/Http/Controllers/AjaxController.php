@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Post;
 use App\Comment;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class AjaxController extends Controller
 {
@@ -18,7 +19,49 @@ class AjaxController extends Controller
 
     public function getComments(Request $request)
     {
-        // $post = new Post::where
+        $post = Post::find($request->post_id);
+        // $post = Post::find(1);
+        $comments = $post->get_comments->where('sub_of', '0');
+
+        $coms = [];
+        $sub_coms = [];
+
+        foreach ($comments as $key => $value) {
+            $coms[$key] = [
+                'id' => $value->id,
+                'sub_of' => $value->sub_of,
+                'author_name' => $value->user->name,
+                'author_avatar' => $value->user->avatar,
+                'message' => $value->comment,
+                'likes' => $value->likes,
+            ];
+
+            // $subs_tmp = $value->sub_coms;
+            $subs_tmp = Comment::find($value->id)->sub_coms;
+
+            if ($subs_tmp->count() > 0) {
+                $sub_coms[$key] = [];
+                
+                foreach ($subs_tmp as $key2 => $value2) {
+                    $sub_coms[$key][] = [
+                        'sub_of' => $value2->sub_of,
+                        'author_name' => $value2->user->name,
+                        'author_avatar' => $value2->user->avatar,
+                        'message' => $value2->comment,
+                        'likes' => $value2->likes,
+                    ];
+                }
+            }
+        }
+
+        $response = array(
+            'status' => 'success',
+            'comments' => $coms,
+            'sub_comments' => $sub_coms
+        );
+
+        return response()->json($response, 200);
+
     }
 
     public function comment(Request $request)

@@ -16,12 +16,12 @@ class Post extends Model
         'comments' => 0
     ];
 
-    public function comments()
+    public function get_comments()
     {
         return $this->hasMany('App\Comment');
     }
 
-    public function likes()
+    public function get_likes()
     {
         return $this->hasMany('App\Like');
     }

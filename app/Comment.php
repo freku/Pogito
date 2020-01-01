@@ -20,6 +20,16 @@ class Comment extends Model
         return $this->hasMany('App\Like');
     }
 
+    public function sub_coms()
+    {
+        return $this->hasMany('App\Comment', 'sub_of');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo('App\Comment', 'sub_of', 'id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');
