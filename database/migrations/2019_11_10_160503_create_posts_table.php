@@ -19,9 +19,11 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('thumbnail_url');
             $table->string('clip_url');
+            $table->string('streamer_name');
             $table->integer('likes');
             $table->integer('comments');
             $table->float('popularity');
+            $table->timestamp('last_activity');
             $table->timestamps();
         });
     }

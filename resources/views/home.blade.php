@@ -3,19 +3,44 @@
 @section('title', 'Home page')
 
 @section('content')
+<script src={{ asset('js/home.js') }}></script>
+
+{{-- <div class='w-full h-12 mt-10 fixed flex justify-center inset-0 z-10'>
+    <div class='w-1/2 p-2 bg-red-200'>
+        <p class='bg-white'>Nice paragraph!</p>
+        <p class='bg-white'>Nice paragraph!</p>
+        <p class='bg-white'>Nice paragraph!</p>
+        <p class='bg-white'>Nice paragraph!</p>
+    </div>
+</div> --}}
 <div class="container mx-auto mt-4 flex">
-        <!-- clips wrapper -->
-    <div class="lg:w-2/3 sm:w-3/4 w-full flex justify-end flex-wrap"> 
-        @foreach ([1,2,3,4,5,5,5,5] as $item)
+    <input type="hidden" name="page_num" value='1'>
+    <input type="hidden" name="sort_type" value='{{ $sort_type ?? 1 }}'> {{-- 1 - popular, 2 - nowości --}}
+    @auth
+        <input type="hidden" name="user_id" value='{{ Auth::user()->id }}'>
+    @endauth
+    <!-- clips wrapper -->
+    <div class="lg:w-2/3 sm:w-3/4 w-full">
+        <div id='clips' class='flex justify-end flex-wrap w-full'>
+            <div class='lg:w-4/6 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'>
+                <span>Sortuj według: </span>
+                <select id="sort_opt" class='border rounded' onchange="redirectSort(this.value);">
+                    <option value="1" {{$sort_type == 1 ? 'selected' : ''}}>Popularności</option>
+                    <option value="2" {{$sort_type == 2 ? 'selected' : ''}}>Nowości</option>
+                </select>
+            </div>
+        </div>
+        <div id='load-gif' class="w-full justify-end flex">
+            <div class='lg:w-4/6 w-full mx-2 mt-1 mb-2 p-2 flex justify-center'>
+                <img src="{{URL('/images/load.gif')}}" alt="Loading icon" style='height: 40px;'>
+            </div>
+        </div>
+        
         <!-- clip box -->
-        {{-- <div class='lg:w-1/2 sm:w-3/4 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'> --}}
-        {{-- <div class='lg:w-1/2 sm:w-3/4 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'> --}}
-        <div class='lg:w-4/6 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'>
+        {{-- <div class='lg:w-4/6 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s'>
             <div class="flex justify-center relative">
-                {{-- <img src="{{URL('/images/bg.png')}}" class="w-auto rounded" alt="bg"> --}}
-                {{-- <a href=""> --}}
-                    <img src="{{URL('/images/img.jpg')}}" class="w-full rounded" style='object-fit: contain;' alt="bg">
-                {{-- </a> --}}
+                <div class='rounded bg-gray-500' style="height: 272px;"></div>
+                <img src="{{URL('/images/img.jpg')}}" class="w-full rounded" style='object-fit: contain;' alt="bg">
                 <div class="text-xs px-1 rounded absolute text-white font-bold" style="top:5px;right:5px;background:rgba(0,0,0,.3);">
                     <span class='uppercase'>h2p_gucio</span>
                 </div>
@@ -32,20 +57,14 @@
             </div>
             <div class="f-sec font-bold text-center overflow-hidden">
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis interdum ornare. Phasellus non.</p>
-                {{-- <p>{{ Str::random(32) }}</p> --}}
                 
             </div>
             <div class='flex justify-between text-gray-500 mt-2'>
                 <div class='flex'>
-                    {{-- <a href="" class="flex items-center text-xs text-green-500"> --}}
                     <a href="" class="flex items-center text-xs">
                         <i class="material-icons md-14 mr-1 hover:text-blue-500">thumb_up</i>
                         <span class="text-green-500 font-bold">351</span>
-                        {{-- <span class="text-red-500 font-bold">351</span> --}}
                     </a>
-                    {{-- <a href="" class="flex items-center text-xs ml-1">
-                        <i class="material-icons md-14 mr-1 hover:text-orange-500">thumb_down</i>
-                    </a> --}}
                 </div>
                 <a href="" class="flex items-center text-xs hover:text-black">
                     <i class="material-icons md-14 mr-1">comment</i>
@@ -53,9 +72,7 @@
                 </a>
 
             </div>
-        </div>
-        @endforeach
-
+        </div> --}}
     </div>
     
     <!-- SIDE BAR -->
@@ -64,32 +81,33 @@
         <div class='bg-white rounded shadow-lg p-2 m-2 my-1'>
             <a href="" class="flex items-center text-xs justify-center text-lg text-red-500 bg-yellow-300 mb-2">
                 <i class="material-icons mr-1">trending_up</i>
-                <span>HOT</span>
+                <span>TOP TYGODNIA</span>
             </a>
-            @foreach ([1,1,1,1,1] as $item)
+            @foreach ($posts as $p)
                 
             <div class='flex bg-gray-100 rounded mb-2'>
-                <a href='' class='w-1/4 p-2 flex items-center border-r'>
+                <a href='{{ URL("/post/$p->id-" . Str::slug($p->title)) }}' class='w-1/4 p-2 flex items-center border-r' target="_blank">
                     {{-- <img src="{{URL('/images/bg.png')}}" class="w-full rounded" alt="miniaturka"> --}}
-                    <img src="{{URL('/images/img.jpg')}}" class="w-auto rounded" alt="bg">
+                    {{-- <img src="{{URL('/images/img.jpg')}}" class="w-auto rounded" alt="bg"> --}}
+                    <img src="{{ $p->thumbnail_url }}" class="w-auto rounded" alt="bg">
                 </a>
                 <div class='w-3/4'>
                     <div class='flex justify-between border-b'>
                         <a href="" class="flex items-center text-xs text-green-500 pl-2 font-bold">
                             <i class="material-icons md-14 mr-1">thumb_up</i>
-                            <span>351</span>
+                            <span>{{ $p->likes }}</span>
                         </a>
-                        <p class='uppercase text-sm text-right px-2'>h2p_gucio</p>
+                        <p class='uppercase text-sm text-right px-2'>{{ $p->streamer_name }}</p>
                     </div>
-                    <a href="">
+                    <a href="{{ URL("/post/$p->id-" . Str::slug($p->title)) }}" target="_blank">
                         <p class='text-xs p-2'>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                            {{ $p->title }}
                         </p>
                     </a>
                 </div>
             </div>
             @endforeach
-
+            {{-- <button id='get-coms'>get more posts</button> --}}
         </div>
     </div>
 </div>

@@ -34,3 +34,64 @@
     cursor: not-allowed;
     opacity: 0.5;
 }
+
+.com-liked i {
+    color: #4299e1;
+}
+
+.com-liked i:hover {
+    color: white;
+    background-color: #feb2b2;
+}
+
+.com-not-liked {
+
+}
+
+.com-not-liked i:hover {
+    color: white;
+    background-color: #4299e1;
+}
+
+.post-liked {
+    cursor: default !important;
+    color: #4299e1 !important;
+}
+
+.post-liked:hover {
+    border: 1px solid #e2e8f0 !important;
+}
+
+.likable:hover div i {
+    color: #4299e1; 
+}
+
+.liked-home-post-puss div i {
+    color: #4299e1;
+}
+
+.liked-home-post-puss:hover {
+    cursor: default;
+}
+
+.more-menu:hover div {
+    display: inline;
+}
+
+.com-reported {
+    opacity: 0.5;
+    color: red;
+}
+
+.selected {
+    background: rgb(81, 155, 216);
+    border-color: black;
+}
+
+.action-done {
+    opacity: 0.5;
+}
+
+.action-done div {
+    cursor: not-allowed !important;
+}

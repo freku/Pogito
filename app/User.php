@@ -27,6 +27,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Comment');
     }
 
+    public function bans()
+    {
+        return $this->hasMany('App\Ban');
+    }
+
+    public function given_bans()
+    {
+        return $this->hasMany('App\Ban', 'id', 'by_user_id');
+    }
+
     public function likes()
     {
         return $this->hasMany('App\Like');
@@ -35,5 +45,10 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany('App\Post');
+    }
+    
+    public function rank()
+    {
+        return $this->hasOne('App\Rank');
     }
 }

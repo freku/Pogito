@@ -46,6 +46,16 @@ class TH // TwitchHelpers
             return $id;
         }
 
+        if (Arr::has($url, 'host')
+        && Str::contains($url['host'], 'm.')
+        && Str::contains($url['host'], 'twitch')
+        && Str::contains($url['host'], 'tv')
+        && Arr::has($url, 'path')) {
+            
+            $id = Str::after($url['path'], "/clip/");
+            return $id;
+        }
+
         return '_';
     }
 }

@@ -4,6 +4,12 @@
 
 @section('content')
 <script src={{ asset('js/ajax.js') }}></script>
+
+{{-- <div class='w-full h-full fixed flex justify-center inset-0 z-10 ' style='background: rgba(0,0,0,.5);'>
+    <div class='bg-white h-12 w-1/4'>
+        <p>Tag</p>
+    </div>
+</div> --}}
 <div class="container mx-auto justify-center flex mt-2">
     <div class='bg-white rounded shadow-lg p-2 lg:w-1/2 md:w-4/6 w-full'>
         <div class="h_iframe">
@@ -14,7 +20,8 @@
         <div class="flex pt-2">
             <div class='w-1/6'>
                 <a href="" class="flex items-center flex-col text-xs hover:text-black">
-                    <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
+                    {{-- <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar"> --}}
+                    <img src="{{URL($avatar)}}" class="w-8 rounded-full" alt="avatar">
                     <span>{{ $autor }}</span>
                     <!-- Skrocic nick jesli jest za dlugo -->
                 </a>
@@ -48,10 +55,10 @@
 
         <div class="flex justify-center p-1">
             <div class='flex'>
-                <a href="" class="flex items-center text-md p-2 border rounded shadow hover:border-blue-500 bg-orange-100">
+                <div id='ass-like' class="flex items-center text-md p-2 border rounded shadow hover:border-blue-500 bg-orange-100 select-none cursor-pointer {{$is_liked ? 'post-liked' : ''}}">
                     <i class="material-icons md-18 mr-1">thumb_up</i>
                     <span class="text-green-500 font-bold">{{ $likes }}</span>
-                </a>
+                </div>
                 {{-- <a href="" class="flex items-center ml-1">
                     <i class="material-icons md-18 mr-1 hover:text-orange-500">thumb_down</i>
                 </a> --}}
@@ -62,16 +69,41 @@
             <div class='mb-3'>
                 {{-- <p>Komentarze: </p> --}}
                 <div class='flex' id='com-box'>
-                    <div class='flex items-center mr-2'>
-                        <img src="{{URL(Auth::user()->avatar)}}" class="w-10 shadom-md rounded-full" alt="avatar">
-                    </div>
-                    <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
-                    <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                    @auth
+                        <div class='flex items-center mr-2'>
+                            <img src="{{URL(Auth::user()->avatar)}}" class="w-10 shadom-md rounded-full" alt="avatar">
+                        </div>
+                        <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
+                        <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                        
+                        <input type="hidden" name="user_id" value='{{ Auth::user()->id }}'>
+                        <input type="hidden" name="user_name" value='{{ Auth::user()->name }}'>
+                    @endauth
+
+                    @if ($is_rank == true)
+                        <input type="hidden" name="is_rank" value='1'>
+                    @endif
+                    
                     <input type="hidden" name="post_id" value='{{ $post_id }}'>
+                    <input type="hidden" name="author_id" value='{{ $autor_id }}'>
+                    <input type="hidden" name="page_num" value='1'>
+
+                    @guest
+                        <div class='flex items-center mr-2'>
+                            <img src="{{URL('/images/avatars/basic.jpg')}}" class="w-10 shadom-md rounded-full" alt="avatar">
+                        </div>
+                        <textarea id='comment-input' name="commentBox" placeholder="Musisz być zalogowany, aby komentować" class='border rounded-l-lg w-full p-1'></textarea>
+                        <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                        {{-- <input type="hidden" name="post_id" value='{{ $post_id }}'> --}}
+                        {{-- <input type="hidden" name="user_id" value='{{ Auth::user()->id }}'> --}}
+                        {{-- <input type="hidden" name="user_name" value='{{ Auth::user()->name }}'> --}}
+                        {{-- <input type="hidden" name="author_id" value='{{ $autor_id }}'> --}}
+                    @endguest
+                    
                 </div>
             </div>
             <div id='comments'>
-                <div class="mb-4 border rounded-lg p-1 bg-blue-100">
+                {{-- <div class="mb-4 border rounded-lg p-1 bg-blue-100">
                     <div class='flex'>
                         <div class='px-2 flex flex-col items-center'>
                             <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar">
@@ -116,10 +148,14 @@
                                 <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
                                 <button id='add-comment-btn' class='uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
                             </div> --}}
-                        </div>
+                        {{-- </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
+            <div id='load-gif' class="w-full flex justify-center">
+                <img src="{{URL('/images/load.gif')}}" alt="Loading icon" class="w-10">
+            </div>
+            {{-- <button id='get-coms'>get more coms</button> --}}
         </div>
     </div>
 </div>

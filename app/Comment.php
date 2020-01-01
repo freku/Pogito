@@ -12,7 +12,8 @@ class Comment extends Model
     protected $guarded = [];
     
     protected $attributes = [
-        'likes' => 0
+        'likes' => 0,
+        'isRemoved' => 0
     ];
 
     public function likes()
@@ -38,5 +39,10 @@ class Comment extends Model
     public function post()
     {
         return $this->belongsTo('App\Post');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany('App\Report');
     }
 }

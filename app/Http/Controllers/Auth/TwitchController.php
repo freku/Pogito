@@ -25,7 +25,10 @@ class TwitchController extends Controller
         $tw_user = Socialite::driver('twitch')->user();
 
         $this->processTwitchAuth($tw_user);
-        
+
+        if(session()->has('url.intended')) {
+            return redirect(session('url.intended'));
+        }
         return redirect('/');
     }
 

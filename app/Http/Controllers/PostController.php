@@ -6,25 +6,41 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\LinkExists;
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use App\Twitch\TH;
+use App\Twitch\Helpers;
 
 use App\TagList;
 use App\Tag;
 use App\Post;
+use App\Like;
+use App\Rank;
 
 class PostController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show', 'sort_new']);
     }
 
     public function index()
     {
-        // dd(Auth::user());
-        return view('home');
+        // $todayMinusOneWeekAgo = \Carbon\Carbon::today()->subWeek();
+        $todayMinusOneWeekAgo = \Carbon\Carbon::today()->subYear();
+
+        $posts = Post::all()->where('created_at', '>=', $todayMinusOneWeekAgo)->sortByDesc('likes')->forPage(1, 5);
+
+        return view('home', ['posts' => $posts, 'sort_type' => 1]);
+    }
+
+    public function sort_new()
+    {
+        $todayMinusOneWeekAgo = \Carbon\Carbon::today()->subYear();
+
+        $posts = Post::all()->where('created_at', '>=', $todayMinusOneWeekAgo)->sortByDesc('likes')->forPage(1, 5);
+        return view('home', ['posts' => $posts, 'sort_type' => 2]);
     }
 
     public function create()
@@ -84,8 +100,9 @@ class PostController extends Controller
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
             'clip_url' => $json['embed_url'],
-            'popularity' => 0, // calculate it correctly
-            'title' => $req->input('tytul')
+            'popularity' => Post::avg('popularity'), // calculate it correctly
+            'title' => $req->input('tytul'),
+            'streamer_name' => $json['broadcaster_name']
         ]);
     }
 
@@ -123,37 +140,30 @@ class PostController extends Controller
             // ustawic poprawne url ( z tytulem postu )
             if (count($url_array) == 1) {
                 return redirect("/post/$post_id-" . Str::slug($post->title));
-            } 
+            }
             else if ($id != $post_id . '-' . Str::slug($post->title)) {
                 return redirect("/post/$post_id-" . Str::slug($post->title));
             }
 
+            $user_id = Helpers::getUserID();
+
             return view('posts.view', [
                 'tytul' => $post->title,
                 'autor' => $post->user->name,
+                'avatar' => $post->user->avatar,
+                'autor_id' => $post->user->id,
                 'clip_url' => $post->clip_url,
                 'likes' => $post->likes,
                 'tags' => $post->tagLists,
-                'time' => $this->getPostDate($post->created_at),
-                'post_id' => $post->id
+                // 'time' => $this->getPostDate($post->created_at),
+                'time' => Helpers::getPostDate($post->created_at),
+                'post_id' => $post->id,
+                'is_liked' => Helpers::isLiked($user_id, 'post_id', $post->id),
+                'is_rank' => Helpers::hasRank($user_id, ['Mod', 'Admin'])
             ]);
         } else { // post nie istnieje
             // view 404 page
             return redirect('/');
-        }
-    }
-
-    public function getPostDate($created_at)
-    {
-        $created_at = \Carbon\Carbon::parse($created_at); 
-        $now = \Carbon\Carbon::now();
-
-        $dif = $now->diffInHours($created_at);
-
-        if ($dif <= 24) {
-            return $dif . ' godz. temu';
-        } else {
-            return $created_at->format('d.m.Y');
         }
     }
 

@@ -20,6 +20,7 @@ class CreateCommentsTable extends Migration
             $table->integer('sub_of', 0);
             $table->integer('likes');
             $table->string('comment');
+            $table->integer('isRemoved');
             $table->timestamps();
         });
     }
