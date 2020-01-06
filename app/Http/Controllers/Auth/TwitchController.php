@@ -10,6 +10,8 @@ use Auth;
 
 class TwitchController extends Controller
 {
+    // dodac kolumne tw_name w tabeli 'users'
+    //
     public function __construct()
     {
         $this->middleware('guest');
@@ -29,6 +31,7 @@ class TwitchController extends Controller
         if(session()->has('url.intended')) {
             return redirect(session('url.intended'));
         }
+
         return redirect('/');
     }
 

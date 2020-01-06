@@ -20,6 +20,8 @@ Route::get('/mod/reports', 'ModController@reports');
 
 Route::resource('post', 'PostController');
 
+Route::get('/x/{name}', 'ProfileController@show');
+
 Route::get('/login/twitch', 'Auth\TwitchController@redirectToProvider')->name('twitch-login');
 Route::get('/login/twitch/cb', 'Auth\TwitchController@handleProviderCallback');
 
