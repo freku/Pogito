@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Logowanie | Strona')
+
 @section('content')
 
-<div class='m-full sm:max-w-sm mx-2 sm:mx-0 bg-white mt-4 sm:mx-auto rounded shadow-lg'>
+<div class='m-full sm:max-w-sm mx-2 sm:mx-0 bg-white mt-4 sm:mx-auto rounded shadow-lg f-sec'>
     <a href='{{ route('twitch-login') }}' class='bg-purple-600 flex justify-center items-center text-white p-4 block rounded-t'>
         <span>Zaloguj się przez twitch</span>
         <img src="{{URL('/images/tw.png')}}" alt="logo twitcha" class='w-8 ml-4'>
@@ -11,6 +13,11 @@
         <form action="{{ route('login') }}" method="post">
             @csrf
             @error('password')
+                <span class="w-full bg-red-100 border-red-700 text-red-600 p-2 border w-full block mb-4 text-sm" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+            @error('twitch')
                 <span class="w-full bg-red-100 border-red-700 text-red-600 p-2 border w-full block mb-4 text-sm" role="alert">
                     {{ $message }}
                 </span>

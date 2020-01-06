@@ -1,16 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'View page')
+@section('title', $tytul . ' | Strona')
 
 @section('content')
 <script src={{ asset('js/ajax.js') }}></script>
 
 {{-- <div class='w-full h-full fixed flex justify-center inset-0 z-10 ' style='background: rgba(0,0,0,.5);'>
-    <div class='bg-white h-12 w-1/4'>
-        <p>Tag</p>
+    <div class='bg-white h-64 md:w-1/2 lg:w-1/3 w-full mt-20 mx-2 rounded'>
+        <div class='text-right'>
+            <i class="material-icons cursor-pointer">close</i>
+        </div>
     </div>
 </div> --}}
-<div class="container mx-auto justify-center flex mt-2">
+<div class="container mx-auto justify-center flex mt-2 f-sec">
     <div class='bg-white rounded shadow-lg p-2 lg:w-1/2 md:w-4/6 w-full'>
         <div class="h_iframe">
             <img class="ratio" src="{{URL('/images/img.jpg')}}"/>
@@ -55,9 +57,12 @@
 
         <div class="flex justify-center p-1">
             <div class='flex'>
-                <div id='ass-like' class="flex items-center text-md p-2 border rounded shadow hover:border-blue-500 bg-orange-100 select-none cursor-pointer {{$is_liked ? 'post-liked' : ''}}">
+                <div id='ass-like' class="tooltip flex items-center text-md p-2 border rounded shadow hover:border-blue-500 bg-orange-100 select-none cursor-pointer {{$is_liked ? 'post-liked' : ''}}">
                     <i class="material-icons md-18 mr-1">thumb_up</i>
                     <span class="text-green-500 font-bold">{{ $likes }}</span>
+                    @guest
+                        <span class='tooltiptext text-xs'>Musisz być zalogowany</span>
+                    @endguest
                 </div>
                 {{-- <a href="" class="flex items-center ml-1">
                     <i class="material-icons md-18 mr-1 hover:text-orange-500">thumb_down</i>
@@ -92,8 +97,14 @@
                         <div class='flex items-center mr-2'>
                             <img src="{{URL('/images/avatars/basic.jpg')}}" class="w-10 shadom-md rounded-full" alt="avatar">
                         </div>
-                        <textarea id='comment-input' name="commentBox" placeholder="Musisz być zalogowany, aby komentować" class='border rounded-l-lg w-full p-1'></textarea>
-                        <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
+                        <textarea readonly id='comment-input' name="commentBox" placeholder="Musisz być zalogowany, aby komentować" class='border rounded-l-lg w-full p-1'></textarea>
+                        <button class='tooltip add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>
+                            Dodaj komentarz
+                            <span class="tooltiptext text-xs lowercase">Musisz być zalogowany!</span>
+                        </button>
+                        {{-- <div class="tooltip">Hover over me
+                            <span class="tooltiptext">Tooltip text</span>
+                        </div> --}}
                         {{-- <input type="hidden" name="post_id" value='{{ $post_id }}'> --}}
                         {{-- <input type="hidden" name="user_id" value='{{ Auth::user()->id }}'> --}}
                         {{-- <input type="hidden" name="user_name" value='{{ Auth::user()->name }}'> --}}

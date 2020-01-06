@@ -76,11 +76,12 @@ $(document).ready(function() {
         var html = '';
         var colors = ['red', 'orange', 'yellow', 'green', 'teal', 'blue', 'purple', 'pink'];
         var likeClass = is_liked ? 'liked-home-post-puss' : '';
-        // var time_place = '';
+        var isAuthed = $('input[name="user_id"]').attr('value') !== undefined;
+
         html += `
             <div class='lg:w-4/6 w-full bg-white mx-2 mt-1 mb-2 p-2 rounded-lg shadow-lg gradient-s' post-id=${post_id}>
                 <div class="flex justify-center relative">
-                    <div class='rounded bg-gray-500' style="height: 272px;"></div>
+                    <!--<div class='rounded bg-gray-500' style="height: 272px;"></div>-->
                     <a href="${post_url}" target="_blank" class='w-full'>
                         <img src="${thumbnail_url}" class="w-full rounded" style='object-fit: contain;' alt="bg">
                     </a>
@@ -109,11 +110,12 @@ $(document).ready(function() {
                 </div>
                 
                 <div class='flex justify-between text-gray-500 mt-2'>
-                    <div class='flex cursor-pointer likable select-none ${likeClass}'>
+                    <div class='tooltip flex cursor-pointer likable select-none ${likeClass}'>
                         <div class="flex items-center text-xs">
                             <i class="material-icons md-14 mr-1">thumb_up</i>
                             <span class="text-green-500 font-bold">${likes}</span>
                         </div>
+                        ${isAuthed ? '' : '<span class="tooltiptext text-xs lowercase">Musisz być zalogowany!</span>'}
                     </div>
 
                     <a href="" class="flex items-center text-xs hover:text-black">

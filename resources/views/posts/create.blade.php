@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home page')
+@section('title', 'Dodawanie postu | Strona')
 
 @section('content')
     <div class="container mx-auto mt-4 flex justify-center f-sec ">
@@ -26,7 +26,7 @@
                 {{-- tytul, link, tagi --}}
                 <label for='link' class='pb-1 block text-gray-600'>{ Link }</label>
                 <input type="text" id='link' name='link' class='border w-full p-2 appearance-none focus:bg-gray-100 focus:outline-none focus:border-blue-500' value="{{ old('link') }}" placeholder="Podaj link to klipa">
-                <p class='text-sm text-gray-800 pt-1'>Przykład: 
+                <p class='text-sm text-gray-800 pt-1 overflow-hidden'>Przykład: 
                     <span class='text-orange-600'>https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage</span>
                 </p>
             </div>

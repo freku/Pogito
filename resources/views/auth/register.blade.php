@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Rejestracja | Strona')
+
 @section('content')
 <div class='m-full sm:max-w-sm mx-2 sm:mx-0 bg-white mt-4 sm:mx-auto rounded shadow-lg'>
     <div class='bg-blue-600 flex justify-center items-center text-white p-4 block rounded-t'>

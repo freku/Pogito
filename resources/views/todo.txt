@@ -49,3 +49,47 @@ curl -H 'Accept: application/vnd.twitchtv.v5+json' \
 -H 'Client-ID: 8mn58soemts6mq5adodbb1cx23o5re' \
 -X GET 'https://api.twitch.tv/kraken/clips/SwissCarefulAnteaterPRChase'
 
+Logowanie przez:
+    Twitch:
+        Zalogowany:
+            Do normalnego konta zostaje ustawione połączone konto Twitch ( jeśli jakies jest juz dolaczone to zostaje zastapione nowym jesli user chce)
+        Niezalogowany:
+            Konto nie zostało jeszcze stworzone, wyskakuje box proszący o nick nowego normalnego konta, z którym zostanie połaczone konto twitch z którego się loguje
+
+    Konto:
+        Zalogowany i Niezalogowany:
+            Normalne logowanie
+
+
+processTwitchAuth($twUser) PREVIOUS CODE:
+
+    $user = User::firstOrNew(
+        ['twitch_id' => $twUser['id']]
+    );
+
+    // Twitch acc exists - update avatar, else insert record
+    // Finally set auth login
+    if ($user->exists) {
+        $user->avatar = $twUser->avatar;
+        $user->save();
+    } else {
+        $user->name = $twUser->name;
+        // $user->email = $twUser->email;
+        $user->avatar = $twUser->avatar;
+
+        User::create([
+            'name' => $twUser->name,
+            // 'email' => $twUser->email,
+            'email' => $twUser['id'],
+            'password' => '',
+            'avatar' => $twUser->avatar,
+            'twitch_id' => $twUser['id']
+        ]);
+    }
+
+    $user->isTwitch = true;
+
+    Auth::login($user);
+
+JESLI USUNIE SIE REKORD USERA W BAZIE DANYCH KOMENTARZE I POSTY PRZESTAJA DZIALAC ( id usera w poscie/komie odwoluje sie do nieistniejacego usera w tabeli )
+nie mozna usuwac userow

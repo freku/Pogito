@@ -111,7 +111,8 @@ class AjaxController extends Controller
                 'message' => $value->isRemoved == '1' ? '!' : $value->comment,
                 'likes' => $value->likes,
                 'is_liked' => Helpers::isLiked($user_id, 'comment_id', $value->id),
-                'isRemoved' => $value->isRemoved == '1'
+                'isRemoved' => $value->isRemoved == '1',
+                'tw_author_name' => $value->user->name_tw
             ];
 
             // $subs_tmp = $value->sub_coms;
@@ -131,7 +132,8 @@ class AjaxController extends Controller
                         'message' => $value2->isRemoved == '1' ? '!' : $value2->comment,
                         'likes' => $value2->likes,
                         'is_liked' => Helpers::isLiked($user_id, 'comment_id', $value2->id),
-                        'isRemoved' => $value2->isRemoved == '1'
+                        'isRemoved' => $value2->isRemoved == '1',
+                        'tw_author_name' => $value2->user->name_tw
                     ];
                 }
             }
@@ -190,7 +192,6 @@ class AjaxController extends Controller
         );
 
         return response()->json($response, 200);
-        // return response()->json($response, 422); // error code 
     }
 
     public function addComment($req)

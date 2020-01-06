@@ -38,8 +38,6 @@ class UserProvider extends EloquentUserProvider implements UserProviderContract 
             }
         }
 
-        $query->whereNull('twitch_id');
-
         return $query->first();
     }
 }

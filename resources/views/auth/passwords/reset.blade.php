@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Resetowanie hasła | Strona')
+
 @section('content')
 
 <div class='m-full sm:max-w-sm mx-2 sm:mx-0 bg-white mt-4 sm:mx-auto rounded shadow-lg'>
@@ -38,7 +40,7 @@
                 <input id="password-confirm" type="password" class="border w-full border p-2 appearance-none focus:bg-gray-100 focus:outline-none focus:border-blue-500" placeholder="Powtorz hasło" name="password_confirmation" required autocomplete="current-password">
             </div>
             
-            <button type="submit" class='w-full border p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900'>
+            <button type="submit" class='w-full border p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 mb-2'>
                 Zresetuj hasło
             </button>
         </form>

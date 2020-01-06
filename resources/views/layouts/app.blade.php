@@ -32,7 +32,7 @@
         </div>
         
         <div class='w-1/3 flex justify-center'>
-        <a href="{{ url('/') }}" class="text-lg md:text-2xl f-main font-bold text-gray-800">\ k0x /</a>
+            <a href="{{ url('/') }}" class="text-lg md:text-2xl f-main font-bold text-gray-800">\ k0x /</a>
         </div>
 
         <div class='w-1/3 flex items-center justify-end text-gray-700 f-sec'>
@@ -56,10 +56,24 @@
                     <i class="material-icons absolute" style='top:33px;'>arrow_drop_down</i>
 
                     <div class="flex flex-col bg-white absolute text-sm shadow rounded-lg text-center dd-menu hidden right-0" style='top:110%;'>
-                        <a href="" class='hover:bg-gray-100 px-8 py-2'>{{ Auth::user()->name }}</a>
+                        <a href="{{ URL('/x/' . Auth::user()->name) }}" class='hover:bg-gray-100 px-8 py-2 flex items-center'>
+                            <i class="material-icons">person</i>
+                            <div>
+                                <span>{{ Auth::user()->name }}</span>
+                                @if (Auth::user()->name_tw != null)
+                                    <span class='block text-xs text-purple-700'>{{ Auth::user()->name_tw }}</span>
+                                @endif
+                            </div>
+                        </a>
+                        <a href="{{ URL('/x/' . Auth::user()->name) . '/settings' }}" class='hover:bg-gray-100 px-8 py-2 flex items-center'>
+                            <i class="material-icons">settings_applications</i>
+                            <span>Ustawienia</span>
+                        </a>
                         {{-- <a href="" class='hover:bg-gray-100 px-8 py-2'>Profil</a> --}}
-                        <a href="" class='hover:bg-gray-100 px-8 py-2' onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">Wyloguj</a>
+                        <a href="" class='hover:bg-gray-100 px-8 py-2 flex items-center' onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="material-icons">directions_run</i>
+                            <span>Wyloguj się</span>
+                        </a>
                     </div>
                 </div>
             @endguest

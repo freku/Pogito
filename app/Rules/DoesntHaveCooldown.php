@@ -49,23 +49,27 @@ class DoesntHaveCooldown implements Rule
         $coms_likes = Comment::where('user_id', $this->user_id)->sum('likes');
         $last_com = Comment::where('user_id', $this->user_id)->max('created_at');
 
-        $last_com_minutes = Carbon::now()->diffInMinutes(Carbon::parse($last_com));
-        $ifs_index = 0;
+        if ($last_com) {
+            $last_com_minutes = Carbon::now()->diffInMinutes(Carbon::parse($last_com));
+            $ifs_index = 0;
 
-        foreach ($ifs as $key => $value) {
-            if ($coms_likes >= (int)$key) {
-                if ($ifs_index == 0) 
-                    $ifs_index = $key;
+            foreach ($ifs as $key => $value) {
+                if ($coms_likes >= (int)$key) {
+                    if ($ifs_index == 0) 
+                        $ifs_index = $key;
 
-                if ($last_com_minutes >= (int)$value) {
-                    return true;
+                    if ($last_com_minutes >= (int)$value) {
+                        return true;
+                    }
                 }
             }
+
+            $this->cdInMinutes = $ifs[$ifs_index] - $last_com_minutes;
+
+            return false;
+        } else {
+            return true;
         }
-
-        $this->cdInMinutes = $ifs[$ifs_index] - $last_com_minutes;
-
-        return false;
     }
 
     /**

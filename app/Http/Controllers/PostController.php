@@ -100,7 +100,7 @@ class PostController extends Controller
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
             'clip_url' => $json['embed_url'],
-            'popularity' => Post::avg('popularity'), // calculate it correctly
+            'popularity' => Post::avg('popularity') || 1, // calculate it correctly
             'title' => $req->input('tytul'),
             'streamer_name' => $json['broadcaster_name']
         ]);

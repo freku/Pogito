@@ -3,6 +3,13 @@ $(document).ready(function() {
     $('#load-gif').hide();
 
     $("#com-box-all").on('click', '.add-comment-btn', function() {
+        var isAuthed = $('input[name="user_id"]').attr('value');
+        if (isAuthed === undefined) {
+            // wyswietl ze musi sie zalogowac
+            console.log('zaloguj sie! add comm');
+            return;
+        }
+
         var com_id = $(this).attr('com-box-id') || null;
         var user_id = $('input[name="user_id"]').attr('value');
         var author_id = $('input[name="author_id"]').attr('value');
@@ -65,8 +72,15 @@ $(document).ready(function() {
     });
 
     $("#comments").on('click', '.reply', function(e) {
-        var com_id = $(this).parent().parent().attr('com-id');
-        var is_sub = $(this).parent().parent().attr('is-sub');
+        var isAuthed = $('input[name="user_id"]').attr('value');
+        if (isAuthed === undefined) {
+            // wyswietl ze musi sie zalogowac
+            console.log('zaloguj sie! comm reply');
+            return;
+        }
+
+        var com_id = $(this).parent().parent().parent().attr('com-id');
+        var is_sub = $(this).parent().parent().parent().attr('is-sub');
 
         if( $("textarea[com-box-id='"+com_id+"'").length === 0 ) {
             var html = `
@@ -184,14 +198,14 @@ $(document).ready(function() {
                 var author_id = $('input[name="author_id"]').attr('value');
     
                 Object.entries(data.comments).forEach(([k, v])=>{
-                    var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.id, false, v.likes, v.is_liked, v.isRemoved);
+                    var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.id, false, v.likes, v.is_liked, v.isRemoved, v.tw_author_name);
     
                     $('#comments').append(html);
                 });
 
                 Object.entries(data.sub_comments).forEach(([k, v])=>{
                     Object.entries(v).forEach(([k, v])=>{
-                        var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.com_id, true, v.likes, v.is_liked, v.isRemoved) // przedostatnio argument com id
+                        var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.com_id, true, v.likes, v.is_liked, v.isRemoved, v.tw_author_name) // przedostatnio argument com id
                         var sub_of = v.sub_of;
     
                         $("div[com-id='"+ sub_of +"']").after(html);
@@ -279,10 +293,11 @@ $(document).ready(function() {
         }, ms);
     };
 
-    function getComment(avatar, name, is_author, message, com_id, is_sub, likes=0, is_liked, is_removed) {
+    function getComment(avatar, name, is_author, message, com_id, is_sub, likes=0, is_liked, is_removed, tw_name) {
         var html = '';
         var is_rank = $('input[name="is_rank"]').attr('value') !== undefined;
         var deleted = '<span class="text-gray-500 italic">[Komentarz został usunięty]';
+        var isAuthed = $('input[name="user_id"]').attr('value') !== undefined;
 
         if (is_sub) {
             html += `<div class='flex ml-12' com-id='`+ com_id +`' is-sub='true'>`;
@@ -296,13 +311,14 @@ $(document).ready(function() {
             <div class='px-2 flex flex-col items-center'>
                 <img src="${avatar}" class="w-8 rounded-full" alt="avatar">
                 <span class='text-green-700'>+${likes}</span>
-                <div class='LikeAssButton select-none cursor-pointer ${likeClass}'>
+                <div class='tooltip LikeAssButton select-none cursor-pointer ${likeClass}'>
                     <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
+                    ${isAuthed ? '' : '<span class="tooltiptext text-xs lowercase">Musisz być zalogowany!</span>'}
                 </div>
             </div>
             <div class='left-com-box w-full'>
-                <a href="" class="flex items-center text-xs text-gray-600">
-                    <span class="font-bold">${name}</span>`;
+                <a href="/x/${name}" class="flex items-center text-xs text-gray-600">
+                    <span class="font-bold">${name} ${tw_name ? '(<span class="text-purple-800">' + tw_name + '</span>)' : ''}</span>`;
         if (is_author) {
             html += '<i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>';
         }
@@ -311,7 +327,10 @@ $(document).ready(function() {
                     <p class='text-sm'>
                         ${is_removed ? deleted : message}
                     </p>
-                    <i type='sub-com' class="reply material-icons md-18 mr-1 cursor-pointer">reply</i>
+                    <div class='tooltip'>
+                        <i type='sub-com' class="reply material-icons md-18 mr-1 cursor-pointer">reply</i>
+                        ${isAuthed ? '' : '<span class="tooltiptext text-xs lowercase">Musisz być zalogowany!</span>'}
+                    </div>
                     <div class="more-menu inline relative">
                         <i class="material-icons md-18 mr-1 hover:text-gray-700 cursor-pointer">more_horiz</i>
                         <div class='bg-white absolute rounded shadow border hidden select-none'>
