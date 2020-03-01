@@ -20,7 +20,7 @@
         @enderror --}}
         <div class='w-full flex justify-center md:flex-row flex-col'>
             <div class='flex flex-col items-center m-2'>
-                <img class='w-32 rounded-full mb-2 mx-2 shadow-lg' src="{{ $user->avatar }}" alt="Profile avatar">
+                <img class='w-32 h-32 rounded-full mb-2 mx-2 shadow-lg' src="{{ $user->avatar }}" alt="Profile avatar">
                 <p class=' text-center px-4 py-1'>{{ $user->name }}</p>
                 {{-- bg-gray-800 text-white rounded-full shadow-md --}}
                 @if ($user->name_tw != null)

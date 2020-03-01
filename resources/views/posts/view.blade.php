@@ -5,13 +5,6 @@
 @section('content')
 <script src={{ asset('js/ajax.js') }}></script>
 
-{{-- <div class='w-full h-full fixed flex justify-center inset-0 z-10 ' style='background: rgba(0,0,0,.5);'>
-    <div class='bg-white h-64 md:w-1/2 lg:w-1/3 w-full mt-20 mx-2 rounded'>
-        <div class='text-right'>
-            <i class="material-icons cursor-pointer">close</i>
-        </div>
-    </div>
-</div> --}}
 <div class="container mx-auto justify-center flex mt-2 f-sec">
     <div class='bg-white rounded shadow-lg p-2 lg:w-1/2 md:w-4/6 w-full'>
         <div class="h_iframe">
@@ -23,8 +16,8 @@
             <div class='w-1/6'>
                 <a href="" class="flex items-center flex-col text-xs hover:text-black">
                     {{-- <img src="{{URL('/images/avk.jpeg')}}" class="w-8 rounded-full" alt="avatar"> --}}
-                    <img src="{{URL($avatar)}}" class="w-8 rounded-full" alt="avatar">
-                    <span>{{ $autor }}</span>
+                    <img src="{{URL($avatar)}}" class="w-8 h-8 rounded-full" alt="avatar">
+                    <span>{{ $autor != '.' ? $autor : '[g0n3]' }}</span>
                     <!-- Skrocic nick jesli jest za dlugo -->
                 </a>
             </div>
@@ -76,9 +69,9 @@
                 <div class='flex' id='com-box'>
                     @auth
                         <div class='flex items-center mr-2'>
-                            <img src="{{URL(Auth::user()->avatar)}}" class="w-10 shadom-md rounded-full" alt="avatar">
+                            <img src="{{URL(Auth::user()->avatar)}}" class="w-10 h-10 shadom-md rounded-full" alt="avatar">
                         </div>
-                        <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-full p-1'></textarea>
+                        <textarea id='comment-input' name="commentBox" placeholder="Napisz coś.." class='border rounded-l-lg w-9/12 p-1'></textarea>
                         <button  class='add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>Dodaj komentarz</button>
                         
                         <input type="hidden" name="user_id" value='{{ Auth::user()->id }}'>
@@ -94,10 +87,10 @@
                     <input type="hidden" name="page_num" value='1'>
 
                     @guest
-                        <div class='flex items-center mr-2'>
-                            <img src="{{URL('/images/avatars/basic.jpg')}}" class="w-10 shadom-md rounded-full" alt="avatar">
+                        <div class='flex items-center mr-2 w-10'>
+                            <img src="{{URL('/images/avatars/basic.jpg')}}" class="w-10 h-10 shadom-md rounded-full" alt="avatar">
                         </div>
-                        <textarea readonly id='comment-input' name="commentBox" placeholder="Musisz być zalogowany, aby komentować" class='border rounded-l-lg w-full p-1'></textarea>
+                        <textarea readonly id='comment-input' name="commentBox" placeholder="Musisz być zalogowany, aby komentować" class='border rounded-l-lg w-9/12 p-1'></textarea>
                         <button class='tooltip add-comment-btn uppercase text-xs bg-blue-500 text-white rounded-r px-4 py-1 shadow hover:bg-blue-400'>
                             Dodaj komentarz
                             <span class="tooltiptext text-xs lowercase">Musisz być zalogowany!</span>

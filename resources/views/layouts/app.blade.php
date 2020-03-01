@@ -32,7 +32,7 @@
         </div>
         
         <div class='w-1/3 flex justify-center'>
-            <a href="{{ url('/') }}" class="text-lg md:text-2xl f-main font-bold text-gray-800">\ k0x /</a>
+            <a href="{{ url('/') }}" class="text-2xl f-main font-bold text-gray-800">pogito</a>
         </div>
 
         <div class='w-1/3 flex items-center justify-end text-gray-700 f-sec'>
@@ -49,9 +49,9 @@
                 </a>
                 <div class='flex flex-col items-center cursor-pointer dd-menu-img'>
                     @if (Auth::user()->isTwitch)
-                        <img src="{{ Auth::user()->avatar }}" class='w-8 rounded-full' alt="">
+                        <img src="{{ Auth::user()->avatar }}" class='w-8 h-8 rounded-full' alt="">
                     @else
-                        <img src="{{ url(Auth::user()->avatar) }}" class='w-8 rounded-full' alt="">
+                        <img src="{{ url(Auth::user()->avatar) }}" class='w-8 h-8 rounded-full' alt="">
                     @endif
                     <i class="material-icons absolute" style='top:33px;'>arrow_drop_down</i>
 

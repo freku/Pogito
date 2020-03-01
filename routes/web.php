@@ -22,7 +22,7 @@ Route::resource('post', 'PostController');
 
 Route::get('/x/{name}', 'ProfileController@show')->name('profile.show');
 Route::get('/x/{name}/settings', 'ProfileController@settings')->name('profile.settings');
-Route::post('/x/{name}/settings', 'ProfileController@settings')->name('profile.settings.post');
+Route::post('/x/{name}/settings', 'ProfileController@settings_post')->name('profile.settings.post');
 
 Route::get('/login/twitch', 'Auth\TwitchController@redirectToProvider')->name('twitch-login');
 Route::get('/login/twitch/cb', 'Auth\TwitchController@handleProviderCallback');
@@ -38,3 +38,5 @@ Route::get('/ajax/like', 'AjaxController@like')->name('ajax.like');
 Route::get('/ajax/test', 'AjaxController@test')->name('ajax.test');
 Route::get('/ajax/report', 'AjaxController@report')->name('ajax.report');
 Route::get('/ajax/report/action', 'AjaxController@report_action')->name('ajax.report.action');
+Route::get('/ajax/com/remove', 'AjaxController@remove_comment')->name('ajax.comment.remove');
+Route::get('/ajax/acc/ban', 'AjaxController@ban_account')->name('ajax.acc.ban');

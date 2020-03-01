@@ -93,3 +93,22 @@ processTwitchAuth($twUser) PREVIOUS CODE:
 
 JESLI USUNIE SIE REKORD USERA W BAZIE DANYCH KOMENTARZE I POSTY PRZESTAJA DZIALAC ( id usera w poscie/komie odwoluje sie do nieistniejacego usera w tabeli )
 nie mozna usuwac userow
+
+
+$image = $request->file('avatar');
+$roz = $image->getClientOriginalExtension();
+$image = Image::make($image->getRealPath());              
+$image->resize(300, 300);
+// $name = Auth::user()->name . '_' . time();
+$name = Auth::user()->name . '_' . Auth::user()->id;
+
+$folder = '/images/avatars/';
+// $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+// $filePath = $folder . $name. '.' . $roz;
+// $deleted_file = $this->deleteOne($filePath);
+$image->save(public_path($folder . $name));
+dd(public_path($folder . $name));
+// $up_file = $this->uploadOne($image, $folder, 'public', $name);
+$usr->avatar = URL('storage' . $filePath);
+$usr->save();
+return Redirect::back()->withErrors(['success' => 'Pomyślnie zmieniono avatar profilowy.']);

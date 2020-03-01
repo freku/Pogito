@@ -20,6 +20,20 @@ class TH // TwitchHelpers
         return $json;
     }
 
+    public static function getJsonFromTwitchUser($twitch_id)
+    {
+        $client = new \GuzzleHttp\Client(['http_errors' => false]);
+
+        $res = $client->get('https://api.twitch.tv/helix/users', [
+            'query' => ['id' => $twitch_id],
+            'headers' => ['Client-ID' => env('TWITCH_CLIENT_ID')]
+        ]);
+
+        $json = json_decode($res->getBody(), true);
+
+        return $json;
+    }
+
     public static function clipExists($json) 
     {
         if (array_key_exists('status', $json) && $json['status'] >= 400) {

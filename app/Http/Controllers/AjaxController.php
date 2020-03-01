@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Post;
 use App\Comment;
 use App\Like;
+use App\Ban;
 use App\Report;
 use App\Twitch\Helpers;
 use Illuminate\Support\Str;
@@ -100,7 +101,7 @@ class AjaxController extends Controller
 
         $coms = [];
         $sub_coms = [];
-
+        
         foreach ($comments as $key => $value) {
             $coms[$key] = [
                 'id' => $value->id,
@@ -112,7 +113,8 @@ class AjaxController extends Controller
                 'likes' => $value->likes,
                 'is_liked' => Helpers::isLiked($user_id, 'comment_id', $value->id),
                 'isRemoved' => $value->isRemoved == '1',
-                'tw_author_name' => $value->user->name_tw
+                'tw_author_name' => $value->user->name_tw,
+                'rank_name' => $value->user->rank ? $value->user->rank->name : 'null'
             ];
 
             // $subs_tmp = $value->sub_coms;
@@ -133,7 +135,8 @@ class AjaxController extends Controller
                         'likes' => $value2->likes,
                         'is_liked' => Helpers::isLiked($user_id, 'comment_id', $value2->id),
                         'isRemoved' => $value2->isRemoved == '1',
-                        'tw_author_name' => $value2->user->name_tw
+                        'tw_author_name' => $value2->user->name_tw,
+                        'rank_name' => $value2->user->rank ? $value2->user->rank->name : 'null'
                     ];
                 }
             }
@@ -263,9 +266,12 @@ class AjaxController extends Controller
             $like->comment->save();
         } else {
             if (!$like->exists) {
+                $a_ = 0.0000002; // r = 315
+                // $a_ = 0.00000002; // r = 30 
+                // 0.0000002 na 2010 > 2326.04, 0.002 na 2010.29 > 9999999, 0.0002 na 2010 > 317757.63
                 $like->type = 'post';
                 $like->post->likes += 1;
-                $like->post->popularity = (0.0000002 * Carbon::now()->timestamp) + (0.98 * $like->post->popularity);
+                $like->post->popularity = ($a_ * Carbon::now()->timestamp) + ((1 - $a_) * $like->post->popularity);
                 $like->post->save();
                 $like->save();
             }
@@ -309,7 +315,7 @@ class AjaxController extends Controller
         $user_id = Helpers::getUserID();
 
         if (!$user_id || !Helpers::hasRank($user_id, ['Mod', 'Admin'])) {
-            return response()->json('no', 422);
+            return response()->json('foff', 422);
         }
 
         $report = Report::find($id);
@@ -324,12 +330,61 @@ class AjaxController extends Controller
                 $report->comment->isRemoved = '1';
                 $report->comment->save();
             }
-    
         } else {
             return response()->json('bad', 404);
         }
-
         
         return response()->json('good', 200);
+    }
+
+    public function remove_comment(Request $request)
+    {
+        $user_id = Helpers::getUserID();
+
+        if (!$user_id || !Helpers::hasRank($user_id, ['Mod', 'Admin'])) {
+            return response()->json('foff', 422);
+        }
+
+        $com_id = $request->id;
+
+        $com = Comment::find($com_id);
+        
+        if ($com) {
+            $com->isRemoved = '1';
+            $com->save();
+            return response()->json('git gut', 200);
+        } else {
+            return response()->json('noff', 404);
+        }
+    }
+
+    public function ban_account(Request $request)
+    {
+        $user_id = Helpers::getUserID();
+
+        if (!$user_id || !Helpers::hasRank($user_id, ['Mod', 'Admin'])) {
+            return response()->json('foff', 422);
+        }
+        $banned_user = Comment::find($request->id);
+        
+        if (!$banned_user) return response()->json('mo', 404);
+
+        $banned_user = $banned_user->user->id;
+
+        if ($banned_user) {
+            $not_banned = Ban::where('user_id', $banned_user)->first();
+
+            if (!$not_banned) {
+                $ban = Ban::firstOrCreate([
+                    'user_id' => $banned_user,
+                    'by_user_id' => $user_id
+                ]);
+                return response()->json('ye', 200);
+            } else {
+                return response()->json('banned already', 404); 
+            }
+        } else {
+            return response()->json('noff', 404);
+        }
     }
 }

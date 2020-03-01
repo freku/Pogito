@@ -99,7 +99,7 @@ $(document).ready(function() {
                 </div>
                 
                 <div class='flex justify-between text-gray-500 text-xs py-1'>
-                    <a href="" class="hover:text-black">${author}</a>
+                    <a href="" class="hover:text-black">${author != '.' ? author : '[g0n3]'}</a>
                     <span>${time_passed}</span>
                 </div>
                 

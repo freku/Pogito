@@ -3,6 +3,7 @@
 namespace App\Twitch;
 use App\Like;
 use App\Rank;
+use App\User;
 use Auth;
 
 class Helpers
@@ -54,5 +55,25 @@ class Helpers
         }
 
         return false;
+    }
+
+    public static function isTwitchConnected($user_id)
+    {
+        $type = gettype($user_id);
+        $user = null;
+
+        if ($type == 'integer') {
+            $user = User::find($user_id);
+        } else if ($type == 'object') {
+            $user = $user_id;
+        }
+
+        if ($user) {
+            if ($user->name_tw != null && $user->twitch_id != null) {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 }

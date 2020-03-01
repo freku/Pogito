@@ -97,7 +97,7 @@
                             <i class="material-icons md-14 mr-1">thumb_up</i>
                             <span>{{ $p->likes }}</span>
                         </a>
-                        <p class='uppercase text-sm text-right px-2'>{{ $p->streamer_name }}</p>
+                        <p class='uppercase text-sm text-right px-2 overflow-hidden'>{{ $p->streamer_name }}</p>
                     </div>
                     <a href="{{ URL("/post/$p->id-" . Str::slug($p->title)) }}" target="_blank">
                         <p class='text-xs p-2'>
@@ -108,6 +108,13 @@
             </div>
             @endforeach
             {{-- <button id='get-coms'>get more posts</button> --}}
+        </div>
+
+        <div class='bg-white rounded shadow-lg p-2 m-2 my-2 text-sm'>
+            <p class='flex items-center'>
+                <i class="material-icons mr-2">mail_outline</i>
+                <span>Kontakt: strona@gmail.com</span>
+            </p>
         </div>
     </div>
 </div>

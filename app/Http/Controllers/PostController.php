@@ -96,11 +96,16 @@ class PostController extends Controller
 
     public function addPost($req, $json)
     {
+        $posts_num = Post::all()->count();
+        $popularity = $posts_num > 0 ? (int)Post::avg('popularity') : 10;
+        // $popularity = $posts_num > 0 ? (int)Post::avg('popularity') * 0.75  : 10; // 75% średniej popularności
+
         return Post::create([
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
             'clip_url' => $json['embed_url'],
-            'popularity' => Post::avg('popularity') || 1, // calculate it correctly
+            // 'popularity' => $posts_num > 0 ? Post::avg('popularity') : 10, // POPULARITY
+            'popularity' => $popularity, // POPULARITY
             'title' => $req->input('tytul'),
             'streamer_name' => $json['broadcaster_name']
         ]);

@@ -41,7 +41,7 @@
 
 .com-liked i:hover {
     color: white;
-    background-color: #feb2b2;
+    background-color: rgb(207, 94, 94);
 }
 
 .com-not-liked {

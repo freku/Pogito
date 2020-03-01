@@ -148,6 +148,49 @@ $(document).ready(function() {
         }
     });
 
+    $("div").on('click', 'p.removeClick', function(e) {
+        e.stopImmediatePropagation();
+        var id = parseInt($(this).attr('com-id'));
+
+        var isAuthed = $('input[name="user_id"]').attr('value');
+        if (isAuthed === undefined) {
+            console.log('zaloguj sie! // report');
+            return;
+        }
+
+        removeCom(id, this);
+    });
+
+    $("div").on('click', 'p.banClick', function(e) {
+        e.stopImmediatePropagation();
+        var id = parseInt($(this).attr('com-id'));
+
+        var isAuthed = $('input[name="user_id"]').attr('value');
+        if (isAuthed === undefined) {
+            console.log('zaloguj sie! // report');
+            return;
+        }
+
+        banAccount(id, this);
+    });
+
+    $("div").on('click', 'span.show-more-bitch', function(e) {
+        e.stopImmediatePropagation();
+        var id = parseInt($(this).attr('subid'));
+        var counter = 5;
+
+        $("div[com-id='"+ id +"'] ~ div.hidden[is-sub='true']").each(function(index) {
+            if (counter > 0) {
+                $(this).toggleClass('hidden');
+                counter--;
+            }
+        });
+
+        if (counter != 0) {
+            $(this).remove();
+        }
+    });
+
     $("#ass-like").on('click', function(e) {
         var isAuthed = $('input[name="user_id"]').attr('value');
         if (isAuthed === undefined) {
@@ -196,25 +239,39 @@ $(document).ready(function() {
             success: function (data) {
                 // var userName = $('input[name="user_name"]').attr('value');
                 var author_id = $('input[name="author_id"]').attr('value');
-    
+
                 Object.entries(data.comments).forEach(([k, v])=>{
-                    var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.id, false, v.likes, v.is_liked, v.isRemoved, v.tw_author_name);
-    
+                    var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.id, false, v.likes, v.is_liked, v.isRemoved, v.tw_author_name, false, v.rank_name);
+
                     $('#comments').append(html);
                 });
 
                 Object.entries(data.sub_comments).forEach(([k, v])=>{
+                    var counter = 1;
+                    var len = v.length;
+
+                    if (len > 5) {
+                        $("div[com-id='"+ v[0].sub_of +"']").after(`
+                            <span class="show-more-bitch select-none cursor-pointer hover:text-blue-400 text-blue-600 text-sm ml-12" subid='${v[0].sub_of}'>
+                                Pokaż więcej komentarzy
+                            </span>
+                        `);
+                    }
+                    
                     Object.entries(v).forEach(([k, v])=>{
-                        var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.com_id, true, v.likes, v.is_liked, v.isRemoved, v.tw_author_name) // przedostatnio argument com id
+                        counter++;
+                        var html = getComment(v.author_avatar, v.author_name, v.author_id == author_id, v.message, v.com_id, true,
+                             v.likes, v.is_liked, v.isRemoved, v.tw_author_name, (len > 5 ? counter <= len - 4 : false), v.rank_name);
                         var sub_of = v.sub_of;
     
                         $("div[com-id='"+ sub_of +"']").after(html);
-                    })
+                    });
                 });
 
                 if (data.num >= 5) {
                     askForMore = true;
                 }
+
             },
             error: function (data) {
                 var errors = $.parseJSON(data.responseText);
@@ -284,6 +341,58 @@ $(document).ready(function() {
         });
     }
 
+    function removeCom(id_, div_ref) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/ajax/com/remove',
+            type: 'GET',
+            data: {
+                id: id_
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                $(div_ref).parent().parent().parent().parent().css({'background-color': '#cbe9f9', 'opacity': '0.5'});
+            },
+            error: function (data) {
+                
+            },
+            complete: function(data, status) {
+
+            }
+        });
+    }
+
+    function banAccount(id_, div_ref) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/ajax/acc/ban',
+            type: 'GET',
+            data: {
+                id: id_
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                $(div_ref).parent().parent().parent().parent().css({'background-color': '#cbe9f9', 'opacity': '0.5'});
+            },
+            error: function (data) {
+                
+            },
+            complete: function(data, status) {
+
+            }
+        });
+    }
+
     function addError(errorMsg, ms = 2500) {
         var id = Math.round(Math.random());
         $("#com-box").after("<div id='"+ id +"' class='bg-red-100 border-red-700 text-red-600 p-2 border m-3 text-sm' role='alert'>" + errorMsg + "</div>");
@@ -293,23 +402,24 @@ $(document).ready(function() {
         }, ms);
     };
 
-    function getComment(avatar, name, is_author, message, com_id, is_sub, likes=0, is_liked, is_removed, tw_name) {
+    function getComment(avatar, name, is_author, message, com_id, is_sub, likes=0, is_liked, is_removed, tw_name, is_hidden, rank) {
         var html = '';
         var is_rank = $('input[name="is_rank"]').attr('value') !== undefined;
         var deleted = '<span class="text-gray-500 italic">[Komentarz został usunięty]';
         var isAuthed = $('input[name="user_id"]').attr('value') !== undefined;
+        var rank_styles = rank == 'Admin' ? 'text-red-600 font-bold' : rank == 'Mod' ? 'text-green-600' : '';
 
         if (is_sub) {
-            html += `<div class='flex ml-12' com-id='`+ com_id +`' is-sub='true'>`;
+            html += `<div class='flex ml-12${is_hidden ? ' hidden' : ''}' com-id='`+ com_id +`' is-sub='true'>`;
         } else {
-            html += `<div class='flex' com-id='`+ com_id +`' is-sub='false'>`;
+            html += `<div class='flex${is_hidden ? ' hidden' : ''}' com-id='`+ com_id +`' is-sub='false'>`;
         }
 
         var likeClass = is_liked ? 'com-liked' : 'com-not-liked';
         
         html += `
             <div class='px-2 flex flex-col items-center'>
-                <img src="${avatar}" class="w-8 rounded-full" alt="avatar">
+                <img src="${avatar}" class="w-8 h-8 rounded-full" alt="avatar">
                 <span class='text-green-700'>+${likes}</span>
                 <div class='tooltip LikeAssButton select-none cursor-pointer ${likeClass}'>
                     <i class="material-icons md-18 p-1 hover:text-white hover:bg-blue-500 border border-blue-500 rounded-full">thumb_up</i>
@@ -318,7 +428,7 @@ $(document).ready(function() {
             </div>
             <div class='left-com-box w-full'>
                 <a href="/x/${name}" class="flex items-center text-xs text-gray-600">
-                    <span class="font-bold">${name} ${tw_name ? '(<span class="text-purple-800">' + tw_name + '</span>)' : ''}</span>`;
+                    <span class="font-bold ${rank_styles}">${name != '.' ? name : '[g0n3]'} ${tw_name ? '(<span class="text-purple-800">' + tw_name + '</span>)' : ''}</span>`;
         if (is_author) {
             html += '<i class="material-icons md-18 ml-1 hover:text-blue-500">person_pin</i>';
         }
@@ -341,11 +451,11 @@ $(document).ready(function() {
                             `;
         if (is_rank) {
             html2 += `
-                <p class='cursor-pointer px-2 hover:bg-gray-200 flex items-center border-b' com-id="` + com_id + `">
+                <p class='banClick cursor-pointer px-2 hover:bg-gray-200 flex items-center border-b' com-id="` + com_id + `">
                     <i class="material-icons md-18 pr-2">gavel</i>
                     Ban
                 </p>
-                <p class='cursor-pointer px-2 hover:bg-gray-200 flex items-center border-b' com-id="` + com_id + `">
+                <p class='removeClick cursor-pointer px-2 hover:bg-gray-200 flex items-center border-b' com-id="` + com_id + `">
                     <i class="material-icons md-18 pr-2">delete</i>
                     Usuń
                 </p>

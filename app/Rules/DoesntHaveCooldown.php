@@ -49,7 +49,7 @@ class DoesntHaveCooldown implements Rule
         $coms_likes = Comment::where('user_id', $this->user_id)->sum('likes');
         $last_com = Comment::where('user_id', $this->user_id)->max('created_at');
 
-        if ($last_com) {
+        if ($last_com) { // ocenia mozliwosc postowanie na podstawie ilosci lajkow z KOMENTARZY - nie z postow, dodac?
             $last_com_minutes = Carbon::now()->diffInMinutes(Carbon::parse($last_com));
             $ifs_index = 0;
 

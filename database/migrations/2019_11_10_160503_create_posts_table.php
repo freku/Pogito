@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration
             $table->string('streamer_name');
             $table->integer('likes');
             $table->integer('comments');
-            $table->float('popularity');
+            $table->integer('popularity');
             $table->timestamp('last_activity');
             $table->timestamps();
         });
