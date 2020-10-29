@@ -59,11 +59,10 @@ class PostController extends Controller
         // set id of the clip
         $id = TH::getLinkID($request->input('link'));
         $json = TH::getJsonFromTwitch($id);
-        dd('yes2');
         
         // validate
         $validator = $this->validatePostData($request, $json)->validate();
-        dd('yes3');
+        // dd('yes3');
         
         $json = $json['data'][0];
         
