@@ -17,7 +17,7 @@ use App\Tag;
 use App\Post;
 use App\Like;
 use App\Rank;
-
+use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Response;
 
@@ -108,7 +108,8 @@ class PostController extends Controller
             // 'popularity' => $posts_num > 0 ? Post::avg('popularity') : 10, // POPULARITY
             'popularity' => $popularity, // POPULARITY
             'title' => $req->input('tytul'),
-            'streamer_name' => $json['broadcaster_name']
+            'streamer_name' => $json['broadcaster_name'],
+            'last_activity' => Carbon::now()->getTimestamp()
         ]);
     }
 
