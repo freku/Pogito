@@ -56,18 +56,21 @@ class PostController extends Controller
         // make tags an array
         $tag_array = preg_split('/\s+/', trim($request->input('tags')));
         $request->merge(['tags' => $tag_array]);
-        
+        dd('yes');
         // set id of the clip
         $id = TH::getLinkID($request->input('link'));
         $json = TH::getJsonFromTwitch($id);
-
+        dd('yes2');
+        
         // validate
         $validator = $this->validatePostData($request, $json)->validate();
-
+        dd('yes3');
+        
         $json = $json['data'][0];
-
+        
         $post = $this->addPost($request, $json);
         $this->processTags($request->input('tags'), $post->id);
+        dd('yes4');
 
         // redirect to new added post
         return redirect("/post/$post->id-" . Str::slug($post->title));
