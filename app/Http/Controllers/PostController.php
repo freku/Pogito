@@ -62,7 +62,7 @@ class PostController extends Controller
         
         // validate
         $validator = $this->validatePostData($request, $json)->validate();
-        // dd('yes3');
+        dd('yes3');
         
         $json = $json['data'][0];
         
