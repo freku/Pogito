@@ -66,9 +66,7 @@ class PostController extends Controller
         $json = $json['data'][0];
         
         $post = $this->addPost($request, $json);
-        dd('yes3');
         $this->processTags($request->input('tags'), $post->id);
-        dd('yes4');
 
         // redirect to new added post
         return redirect("/post/$post->id-" . Str::slug($post->title));
@@ -103,7 +101,6 @@ class PostController extends Controller
         $posts_num = Post::all()->count();
         $popularity = $posts_num > 0 ? (int)Post::avg('popularity') : 10;
         // $popularity = $posts_num > 0 ? (int)Post::avg('popularity') * 0.75  : 10; // 75% średniej popularności
-        dd($json);
         return Post::create([
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
