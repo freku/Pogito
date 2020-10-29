@@ -109,7 +109,7 @@ class PostController extends Controller
             'popularity' => $popularity, // POPULARITY
             'title' => $req->input('tytul'),
             'streamer_name' => $json['broadcaster_name'],
-            'last_activity' => Carbon::now()->getTimestamp()
+            'last_activity' => Carbon::now()->toDateTimeString(),
         ]);
     }
 
