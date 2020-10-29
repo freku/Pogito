@@ -56,7 +56,6 @@ class PostController extends Controller
         // make tags an array
         $tag_array = preg_split('/\s+/', trim($request->input('tags')));
         $request->merge(['tags' => $tag_array]);
-        dd('yes');
         // set id of the clip
         $id = TH::getLinkID($request->input('link'));
         $json = TH::getJsonFromTwitch($id);
