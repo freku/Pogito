@@ -104,7 +104,7 @@ class PostController extends Controller
         return Post::create([
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
-            'clip_url' => $json['embed_url'] . '&parent=localhost',
+            'clip_url' => $json['embed_url'] . '&parent=' . env('APP_DOMAIN_ONLY'),
             // 'popularity' => $posts_num > 0 ? Post::avg('popularity') : 10, // POPULARITY
             'popularity' => $popularity, // POPULARITY
             'title' => $req->input('tytul'),
