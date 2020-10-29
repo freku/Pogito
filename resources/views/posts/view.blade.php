@@ -9,6 +9,7 @@
     <div class='bg-white rounded shadow-lg p-2 lg:w-1/2 md:w-4/6 w-full'>
         <div class="h_iframe">
             <img class="ratio" src="{{URL('/images/img.jpg')}}"/>
+            <p>{{ $clip_url}}</p>
             <iframe src="{{ $clip_url }}" frameborder="0" allowfullscreen="true" autoplay='false'></iframe>
         </div>
         

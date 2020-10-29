@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Twitch\Helpers;
-use Socialite;
+// use Socialite;
+use Laravel\Socialite\Facades\Socialite;
 use App\User;
-use Auth;
+// use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Exception;
-use Redirect;
+// use Redirect;
+use Illuminate\Support\Facades\Redirect;
 
 class TwitchController extends Controller
 {

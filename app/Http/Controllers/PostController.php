@@ -18,6 +18,9 @@ use App\Post;
 use App\Like;
 use App\Rank;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Http\Response;
+
 class PostController extends Controller
 {
     public function __construct()
@@ -103,7 +106,7 @@ class PostController extends Controller
         return Post::create([
             'user_id' => Auth::user()->id,
             'thumbnail_url' => $json['thumbnail_url'],
-            'clip_url' => $json['embed_url'],
+            'clip_url' => $json['embed_url'] . '&parent=localhost',
             // 'popularity' => $posts_num > 0 ? Post::avg('popularity') : 10, // POPULARITY
             'popularity' => $popularity, // POPULARITY
             'title' => $req->input('tytul'),
@@ -152,7 +155,7 @@ class PostController extends Controller
 
             $user_id = Helpers::getUserID();
 
-            return view('posts.view', [
+            $view = view('posts.view', [
                 'tytul' => $post->title,
                 'autor' => $post->user->name,
                 'avatar' => $post->user->avatar,
@@ -166,6 +169,10 @@ class PostController extends Controller
                 'is_liked' => Helpers::isLiked($user_id, 'post_id', $post->id),
                 'is_rank' => Helpers::hasRank($user_id, ['Mod', 'Admin'])
             ]);
+
+            // $response = ;
+            return response($view, 200);
+
         } else { // post nie istnieje
             // view 404 page
             return redirect('/');

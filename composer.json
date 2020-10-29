@@ -13,7 +13,7 @@
         "guzzlehttp/guzzle": "^6.4",
         "intervention/image": "^2.5",
         "laravel/framework": "^6.2",
-        "laravel/socialite": "^4.2",
+        "laravel/socialite": "^5.0.3",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.1",
         "socialiteproviders/twitch": "^5.1"
@@ -32,7 +32,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/socialite"
+            ]
         }
     },
     "autoload": {
